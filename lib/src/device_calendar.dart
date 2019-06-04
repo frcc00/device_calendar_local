@@ -171,6 +171,7 @@ class DeviceCalendarPlugin {
         'eventDescription': event.description,
         'eventStartDate': event.start.millisecondsSinceEpoch,
         'eventEndDate': event.end.millisecondsSinceEpoch,
+            'backString':event.backString
       });
     } catch (e) {
       _parsePlatformExceptionAndUpdateResult<String>(e, res);

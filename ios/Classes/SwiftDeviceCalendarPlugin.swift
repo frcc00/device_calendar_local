@@ -55,6 +55,7 @@ public class SwiftDeviceCalendarPlugin: NSObject, FlutterPlugin {
     let eventDescriptionArgument = "eventDescription"
     let eventStartDateArgument =  "eventStartDate"
     let eventEndDateArgument = "eventEndDate"
+    let eventBackArgument = "backString"
     
     public static func register(with registrar: FlutterPluginRegistrar) {
         let channel = FlutterMethodChannel(name: channelName, binaryMessenger: registrar.messenger())
@@ -174,6 +175,7 @@ public class SwiftDeviceCalendarPlugin: NSObject, FlutterPlugin {
             let endDate = Date (timeIntervalSince1970: endDateDateMillisecondsSinceEpoch.doubleValue / 1000.0)
             let title = arguments[self.eventTitleArgument] as! String
             let description = arguments[self.eventDescriptionArgument] as? String
+            let backString = arguments[self.eventBackArgument] as? String
             let ekCalendar = self.eventStore.calendar(withIdentifier: calendarId)
             if (ekCalendar == nil) {
                 self.finishWithCalendarNotFoundError(result: result, calendarId: calendarId)
@@ -201,6 +203,7 @@ public class SwiftDeviceCalendarPlugin: NSObject, FlutterPlugin {
             ekEvent!.startDate = startDate
             ekEvent!.endDate = endDate
             ekEvent!.calendar = ekCalendar!
+            ekEvent?.url = URL(string: backString ?? "")
             
             ekEvent?.alarms = [EKAlarm(relativeOffset: -60.0*15)];
             

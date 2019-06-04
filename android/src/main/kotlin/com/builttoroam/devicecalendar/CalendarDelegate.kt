@@ -324,6 +324,7 @@ public class CalendarDelegate : PluginRegistry.RequestPermissionsResultListener 
             values.put(Events.TITLE, event.title)
             values.put(Events.DESCRIPTION, event.description)
             values.put(Events.CALENDAR_ID, calendarId)
+            values.put(Events.EVENT_LOCATION, event.location)
             values.put("hasAlarm", 1)
 
             // MK using current device time zone

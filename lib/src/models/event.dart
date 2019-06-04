@@ -26,6 +26,8 @@ class Event {
   /// The location of this event
   String location;
 
+  String backString;
+
   /// A list of attendees for this event
   List<Attendee> attendees;
 
@@ -52,6 +54,7 @@ class Event {
     }
     allDay = json['allDay'];
     location = json['location'];
+    backString = json['backString'];
     if (json['attendees'] != null) {
       attendees = json['attendees'].map<Attendee>((decodedAttendee) {
         return new Attendee.fromJson(decodedAttendee);
@@ -69,6 +72,7 @@ class Event {
     data['end'] = this.end.millisecondsSinceEpoch;
     data['allDay'] = this.allDay;
     data['location'] = this.location;
+    data['backString'] = this.backString;
     if (attendees != null) {
       List<Map<String, dynamic>> attendeesJson = new List();
       for (var attendee in attendees) {
