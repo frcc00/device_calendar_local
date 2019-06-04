@@ -201,6 +201,9 @@ public class SwiftDeviceCalendarPlugin: NSObject, FlutterPlugin {
             ekEvent!.startDate = startDate
             ekEvent!.endDate = endDate
             ekEvent!.calendar = ekCalendar!
+            
+            ekEvent?.alarms = [EKAlarm(relativeOffset: -60.0*15)];
+            
             do {
                 try self.eventStore.save(ekEvent!, span: EKSpan.futureEvents)
                 result(ekEvent!.eventIdentifier)

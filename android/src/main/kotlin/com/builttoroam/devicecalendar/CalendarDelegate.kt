@@ -50,6 +50,9 @@ import com.builttoroam.devicecalendar.common.ErrorMessages.Companion.NOT_AUTHORI
 import com.builttoroam.devicecalendar.models.Attendee
 import com.builttoroam.devicecalendar.models.CalendarMethodsParametersCacheModel
 import java.util.*
+import android.content.ContentValues
+
+
 
 
 public class CalendarDelegate : PluginRegistry.RequestPermissionsResultListener {
@@ -315,12 +318,13 @@ public class CalendarDelegate : PluginRegistry.RequestPermissionsResultListener 
             }
 
             val contentResolver: ContentResolver? = _context?.getContentResolver()
-            val values = ContentValues()
+            var values = ContentValues()
             values.put(Events.DTSTART, event.start)
             values.put(Events.DTEND, event.end)
             values.put(Events.TITLE, event.title)
             values.put(Events.DESCRIPTION, event.description)
             values.put(Events.CALENDAR_ID, calendarId)
+            values.put("hasAlarm", 1)
 
             // MK using current device time zone
             val calendar: java.util.Calendar = java.util.Calendar.getInstance()
@@ -333,6 +337,13 @@ public class CalendarDelegate : PluginRegistry.RequestPermissionsResultListener 
                     val uri = contentResolver?.insert(CalendarContract.Events.CONTENT_URI, values)
                     // get the event ID that is the last element in the Uri
                     eventId = java.lang.Long.parseLong(uri?.getLastPathSegment())
+
+                    values = ContentValues()
+                    values.put("event_id", eventId)
+                    values.put("method", 1)
+                    values.put("minutes", 15)
+                    contentResolver?.insert(CalendarContract.Reminders.CONTENT_URI, values)
+
                 } else {
                     contentResolver?.update(ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, eventId), values, null, null)
                 }
